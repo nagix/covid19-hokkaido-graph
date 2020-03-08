@@ -25,10 +25,15 @@ var GRAPH_MARGIN = 20;
 
 var initialNodes = [
 	{ id: 'wuhan', label: '武漢' },
+	{ id: 'tokyo', label: '東京' },
+	{ id: 'osaka', label: '大阪' },
 	{ id: 'unknown', label: '不明' }
 ];
 
 var clusters = [
+	{ id: 'snow-festival', label: 'さっぽろ雪まつりクラスター', nodes:[3, 5, 19] },
+	{ id: 'kitami', label: '北見展示会クラスター', nodes:[17, 28, 33, 40, 41, 43, 60, 65, 72, 73, 74] },
+	{ id: 'live-bar', label: '札幌中ライブバークラスター', nodes:[79, 84, 85, 97, 98] }
 ];
 
 var boxColors = {
@@ -91,6 +96,7 @@ loadJSON(DATA_URL).then(function(data) {
 		var address = patient['居住地'];
 		var age = patient['年代'];
 		var sex = patient['性別'];
+		var attr = patient['属性'] || '';
 		var remarks = patient['備考'] || '';
 		var supplement = patient['補足'] || '';
 		var dead = remarks.match(/死亡/);
@@ -101,8 +107,12 @@ loadJSON(DATA_URL).then(function(data) {
 				return !isNaN(sourceId) && sourceId < id ? sourceId : 'unknown';
 			});
 
-		if (supplement.match(/武漢/)) {
+		if (attr.match(/武漢/)) {
 			sourceIds = ['wuhan'];
+		} else if (supplement.match(/東京/)) {
+			sourceIds = ['tokyo'];
+		} else if (supplement.match(/大阪/)) {
+			sourceIds = ['osaka'];
 		}
 
 		graph.setNode(id, {
@@ -110,11 +120,11 @@ loadJSON(DATA_URL).then(function(data) {
 			labelType: 'html',
 			label: '<div class="container">' +
 				'<div class="id" style="background-color: ' + colors.stroke + ';">' + id + '</div>' +
-				'<div class="label">' + age + sex + '</div>' + (
+				'<div class="label">' + age + sex + ' ' + attr + '</div>' + (
 					dead ? '<div class="dead badge">死亡</div>' : ''
 				) + '</div>',
 			labelpos: 'l',
-			width: 200,
+			width: 420,
 			height: 30,
 			rx: 5,
 			ry: 5,
@@ -124,6 +134,7 @@ loadJSON(DATA_URL).then(function(data) {
 				'<br>居住地: ' + address +
 				'<br>年代: ' + age +
 				'<br>性別: ' + sex +
+				'<br>属性: ' + attr +
 				'<br>備考: ' + remarks +
 				'<br>補足: ' + supplement +
 				'<br>発表日: ' + patient['short_date']
