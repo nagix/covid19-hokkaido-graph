@@ -33,7 +33,7 @@ var initialNodes = [
 var clusters = [
 	{ id: 'snow-festival', label: 'さっぽろ雪まつりクラスター', nodes:[3, 5, 19] },
 	{ id: 'kitami', label: '北見展示会クラスター', nodes:[17, 28, 33, 40, 41, 43, 60, 65, 72, 73, 74] },
-	{ id: 'live-bar', label: '札幌中ライブバークラスター', nodes:[79, 84, 85, 97, 98] }
+	{ id: 'live-bar', label: '札幌中ライブバークラスター', nodes:[79, 84, 85, 97, 98, 111] }
 ];
 
 var boxColors = {
